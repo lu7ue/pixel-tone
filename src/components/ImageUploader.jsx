@@ -1,10 +1,25 @@
 import { useState } from "react";
 import UploadIcon from "../assets/upload.png";
 
-export default function ImageUploader() {
+export default function ImageUploader({ selectedTemplate }) {
     const [images, setImages] = useState([]);
 
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+    // Function to calculate image display style based on template ratio
+    const getImageStyle = () => {
+        if (!selectedTemplate?.ratio) return {};
+
+        const [ratioWidth, ratioHeight] = selectedTemplate.ratio.split(':').map(Number);
+        const targetRatio = ratioWidth / ratioHeight;
+
+        return {
+            aspectRatio: `${ratioWidth} / ${ratioHeight}`,
+            objectFit: 'cover',
+            width: '100%',
+            height: '100%'
+        };
+    };
 
     const handleFiles = (e) => {
         const files = Array.from(e.target.files);
@@ -58,30 +73,47 @@ export default function ImageUploader() {
                 </label>
 
                 {/* Thumbnails */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
-                    {images.map((img, idx) => (
-                        <div
-                            key={idx}
-                            className="relative border border-gray-300 bg-white rounded overflow-hidden w-full"
-                            style={{ aspectRatio: "7 / 5" }} // fixed 7:5 ratio
-                        >
-                            <div className="flex items-center justify-center w-full h-full">
-                                <img
-                                    src={img.url}
-                                    alt={`upload-${idx}`}
-                                    className="max-w-full max-h-full object-contain"
-                                />
-                            </div>
-                            <button
-                                onClick={() => removeImage(idx)}
-                                className="absolute top-1 right-1 bg-white rounded px-1 text-sm hover:bg-red-500 hover:text-white transition-colors"
-                            >
-                                X
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {images.map((img, idx) => {
+                        const contrast = selectedTemplate?.contrast ?? 1;
+                        const saturation = selectedTemplate?.saturation ?? 1;
+                        const brightness = selectedTemplate?.brightness ?? 1;
 
+                        // Map template ratio to numeric
+                        const ratioMap = {
+                            "1:1": 1,
+                            "16:9": 16 / 9,
+                            "7:5": 7 / 5,
+                        };
+                        const aspectRatio = ratioMap[selectedTemplate?.ratio] || 7 / 5;
+
+                        return (
+                            <div
+                                key={idx}
+                                className="relative border border-gray-300 bg-white rounded overflow-hidden w-full"
+                                style={{ aspectRatio }}
+                            >
+                                <div className="w-full h-full">
+                                    <img
+                                        src={img.url}
+                                        alt={`upload-${idx}`}
+                                        className="w-full h-full object-cover"
+                                        style={{
+                                            filter: `contrast(${contrast}) saturate(${saturation}) brightness(${brightness})`,
+                                        }}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={() => removeImage(idx)}
+                                    className="absolute top-1 right-1 bg-white rounded px-1 text-sm hover:bg-red-500 hover:text-white transition-colors"
+                                >
+                                    X
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
 
             </div>
         </div>

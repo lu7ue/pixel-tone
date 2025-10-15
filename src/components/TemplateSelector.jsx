@@ -5,7 +5,7 @@ export default function TemplateSelector({ selectedTemplate, onSelect }) {
     const [templates, setTemplates] = useState([
         {
             id: 1,
-            name: "Warm",
+            name: "Photo Print",
             ratio: "7:5",
             contrast: 1.2,
             saturation: 1.3,
@@ -13,8 +13,16 @@ export default function TemplateSelector({ selectedTemplate, onSelect }) {
         },
         {
             id: 2,
-            name: "Cool",
+            name: "Movie",
             ratio: "16:9",
+            contrast: 0.9,
+            saturation: 0.8,
+            brightness: 1.0,
+        },
+        {
+            id: 3,
+            name: "Square",
+            ratio: "1:1",
             contrast: 0.9,
             saturation: 0.8,
             brightness: 1.0,
@@ -66,9 +74,16 @@ export default function TemplateSelector({ selectedTemplate, onSelect }) {
                 {templates.map((tpl) => (
                     <div
                         key={tpl.id}
-                        className={`relative cursor-pointer border rounded p-3 bg-white hover:bg-gray-100 transition ${selectedTemplate?.id === tpl.id ? "border-blue-500" : "border-gray-300"
+                        className={`relative cursor-pointer border rounded p-3 bg-white hover:bg-gray-100 transition ${selectedTemplate?.id === tpl.id ? "border-gray-700" : "border-gray-200"
                             }`}
-                        onClick={() => onSelect(tpl)}
+                        onClick={() => {
+                            if (selectedTemplate?.id === tpl.id) {
+                                onSelect(null); // deselect if clicked again
+                            } else {
+                                onSelect(tpl); // select this template
+                            }
+                        }}
+
                     >
                         <div className="flex justify-between items-center mb-2">
                             <h3 className="font-semibold text-gray-700">{tpl.name}</h3>
