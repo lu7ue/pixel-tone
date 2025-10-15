@@ -10,14 +10,11 @@ function App() {
       <div className="mt-12 flex justify-center items-start gap-4 px-4">
         {/* Left: Image Uploader */}
         <div className="w-[600px] flex-shrink-0">
-          <ImageUploader />
+          <ImageUploader selectedTemplate={selectedTemplate} />
         </div>
 
         {/* Right: Template Selector */}
-        <TemplateSelector
-          selectedTemplate={selectedTemplate}
-          onSelect={setSelectedTemplate}
-        />
+        <TemplateSelector selectedTemplate={selectedTemplate} onSelect={setSelectedTemplate} />
       </div>
     </div>
   );
