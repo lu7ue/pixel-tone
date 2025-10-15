@@ -1,16 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import ImageUploader from "./components/ImageUploader";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <p className="text-4xl font-bold text-blue-300">
-      Hello World!
-    </p>
-  )
+    <div className="App">
+      <div className="mt-12">
+        <ImageUploader />
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
