@@ -58,7 +58,7 @@ export default function ImageUploader() {
                 </label>
 
                 {/* Thumbnails */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
                     {images.map((img, idx) => (
                         <div
                             key={idx}
@@ -81,6 +81,7 @@ export default function ImageUploader() {
                         </div>
                     ))}
                 </div>
+
 
             </div>
         </div>
